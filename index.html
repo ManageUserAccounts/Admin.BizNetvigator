@@ -11,7 +11,36 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
     <script>
         function googleTranslateInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+
+        async function detectLocationAndTranslate() {
+            try {
+                let response = await fetch('https://ipapi.co/json/');
+                let data = await response.json();
+                let countryCode = data.country_code.toLowerCase();
+
+                const languageMap = {
+                    "fr": "fr",  // French
+                    "es": "es",  // Spanish
+                    "de": "de",  // German
+                    "zh": "zh-CN",  // Chinese (Simplified)
+                    "ja": "ja",  // Japanese
+                    "ar": "ar",  // Arabic
+                    "ru": "ru",  // Russian
+                    "pt": "pt",  // Portuguese
+                    "it": "it"   // Italian
+                };
+
+                let detectedLanguage = languageMap[countryCode] || "en"; // Default to English
+                let translateUrl = `https://translate.google.com/translate?hl=${detectedLanguage}&sl=en&u=${window.location.href}`;
+
+                if (detectedLanguage !== "en") {
+                    window.location.href = translateUrl;
+                }
+            } catch (error) {
+                console.error("Location detection failed:", error);
+            }
         }
     </script>
     <style>
@@ -23,7 +52,7 @@
         #google_translate_element { margin-bottom: 20px; }
     </style>
 </head>
-<body>
+<body onload="detectLocationAndTranslate()">
     <div id="google_translate_element"></div> <!-- Language Switcher -->
 
     <div id="login" class="container">
