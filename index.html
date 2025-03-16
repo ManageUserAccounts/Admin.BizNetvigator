@@ -8,13 +8,16 @@
     <script>
         emailjs.init("JYKSTvr8xx8jZDFiA"); // EmailJS Public Key
     </script>
+    
+    <!-- Google Translate API -->
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
+    
     <script>
         function googleTranslateInit() {
             new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
 
-        async function detectLocationAndTranslate() {
+        async function detectLocationAndSetLanguage() {
             try {
                 let response = await fetch('https://ipapi.co/json/');
                 let data = await response.json();
@@ -33,16 +36,19 @@
                 };
 
                 let detectedLanguage = languageMap[countryCode] || "en"; // Default to English
-                let translateUrl = `https://translate.google.com/translate?hl=${detectedLanguage}&sl=en&u=${window.location.href}`;
-
-                if (detectedLanguage !== "en") {
-                    window.location.href = translateUrl;
-                }
+                setTimeout(() => {
+                    let selectBox = document.querySelector(".goog-te-combo");
+                    if (selectBox) {
+                        selectBox.value = detectedLanguage;
+                        selectBox.dispatchEvent(new Event("change"));
+                    }
+                }, 2000); // Delay for Google Translate widget to load
             } catch (error) {
                 console.error("Location detection failed:", error);
             }
         }
     </script>
+
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
         .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
@@ -52,8 +58,10 @@
         #google_translate_element { margin-bottom: 20px; }
     </style>
 </head>
-<body onload="detectLocationAndTranslate()">
-    <div id="google_translate_element"></div> <!-- Language Switcher -->
+<body onload="detectLocationAndSetLanguage()">
+    
+    <!-- Google Translate Dropdown -->
+    <div id="google_translate_element"></div>
 
     <div id="login" class="container">
         <h2>Login</h2>
